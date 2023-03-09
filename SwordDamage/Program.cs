@@ -10,18 +10,14 @@ internal class Program
         while (true)
         {
             Console.Write("0 for no abilities, 1 for magic, 2 for flaming, 3 for both; press any other key to quit: ");
-            char keyChar = Console.ReadKey(false).KeyChar; // the boolean in this line determines whether to intercept the character, optional to display in console; KeyChar selects the character to be stored in keyChar
-            Console.WriteLine();
+            char keyChar = Console.ReadKey().KeyChar; // the boolean in this line determines whether to intercept the character, optional to display in console; KeyChar selects the character to be stored in keyChar; ReadKey() defaults to false
 
             if (keyChar == '0' || keyChar == '1' || keyChar == '2' || keyChar == '3')
             {
                 sword.Roll = random.Next(1, 7) + random.Next(1, 7) + random.Next(1, 7);
-                Console.WriteLine("Hi");
-                bool magic = (keyChar == '1' || keyChar == '3');
-                bool flame = (keyChar == '2' || keyChar == '3');
-                sword.SetMagic(magic);
-                sword.SetFlaming(flame);
-                Console.WriteLine($"Rolled {sword.Roll} for {sword.Damage} HP \n");
+                sword.SetMagic(keyChar == '1' || keyChar == '3');
+                sword.SetFlaming(keyChar == '2' || keyChar == '3');
+                Console.WriteLine($"\nRolled {sword.Roll} for {sword.Damage} HP \n");
             }
             else
             {
