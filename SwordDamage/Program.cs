@@ -9,8 +9,18 @@ internal class Program
 
         while (true)
         {
-            Console.WriteLine("0 for no abilities, 1 for magic, 2 for flaming, 3 for both; press any other key to quit: ");
-            Console.ReadKey(false);
+            Console.Write("0 for no abilities, 1 for magic, 2 for flaming, 3 for both; press any other key to quit: ");
+            char keyChar = Console.ReadKey(false).KeyChar; // the boolean in this line determines whether to intercept the character, optional to display in console; KeyChar selects the character to be stored in keyChar
+            Console.WriteLine();
+
+            if (keyChar == '0' || keyChar == '1' || keyChar == '2' || keyChar == '3')
+            {
+                Console.WriteLine("Hi");
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }
