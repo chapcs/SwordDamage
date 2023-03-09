@@ -15,7 +15,13 @@ internal class Program
 
             if (keyChar == '0' || keyChar == '1' || keyChar == '2' || keyChar == '3')
             {
+                sword.Roll = random.Next(1, 7) + random.Next(1, 7) + random.Next(1, 7);
                 Console.WriteLine("Hi");
+                bool magic = (keyChar == '1' || keyChar == '3');
+                bool flame = (keyChar == '2' || keyChar == '3');
+                sword.SetMagic(magic);
+                sword.SetFlaming(flame);
+                Console.WriteLine($"Rolled {sword.Roll} for {sword.Damage} HP \n");
             }
             else
             {
