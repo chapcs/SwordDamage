@@ -1,11 +1,14 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System;
+using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 
 internal class Program
 {
+    static Random random = new Random();
+
     private static void Main(string[] args)
     {
-        Random random = new Random();
-        SwordDamage sword = new SwordDamage();
+        SwordDamage sword = new SwordDamage(RollDice());
 
         while (true)
         {
@@ -14,9 +17,9 @@ internal class Program
 
             if (keyChar == '0' || keyChar == '1' || keyChar == '2' || keyChar == '3')
             {
-                sword.Roll = random.Next(1, 7) + random.Next(1, 7) + random.Next(1, 7);
-                sword.SetMagic(keyChar == '1' || keyChar == '3');
-                sword.SetFlaming(keyChar == '2' || keyChar == '3');
+                sword.Roll = RollDice();
+                sword.Magic(keyChar == '1' || keyChar == '3');
+                sword.Flaming(keyChar == '2' || keyChar == '3');
                 Console.WriteLine($"\nRolled {sword.Roll} for {sword.Damage} HP \n");
             }
             else
@@ -25,40 +28,69 @@ internal class Program
             }
         }
     }
+    static int RollDice()
+    {
+        return random.Next(1, 7) + random.Next(1, 7) + random.Next(1, 7);
+    }
 }
 
+/// <summary>
+/// Main method that calculates the the sword damage based off different params
+/// </summary>
 class SwordDamage
 {
     public const int BASE_DAM = 3;
     public const int FLAME_DAM = 2;
 
-    public int Roll;
-    public decimal MagicMult = 1M;
-    public int FlamingDam = 0;
-    public int Damage;
+    public int roll;
+    public bool flaming;
+    public bool magic;
 
-    public void CalculateDamage()
+    public int Damage { get; private set; }
+
+    public SwordDamage(int startingRoll)
     {
-        Damage = (int)(Roll * MagicMult) + BASE_DAM + FlamingDam;
-    }
-    public void SetMagic(bool isMagic)
-    {
-        if (isMagic)
-        {
-            MagicMult = 1.75M;
-        }
-        else
-        {
-            MagicMult = 1M;
-        }
+        roll = startingRoll;
         CalculateDamage();
     }
-    public void SetFlaming(bool isFlaming)
+
+    
+
+    public int Roll
     {
-        CalculateDamage();
-        if (isFlaming)
+        get { return roll; }
+        set
         {
-            Damage += FLAME_DAM;
+            roll = value;
+            CalculateDamage();
+        }
+    }
+
+    private void CalculateDamage()
+    {
+        decimal MagicMult = 1M;
+        if (Magic) MagicMult = 1.75M;
+
+        Damage = (int)(Roll * MagicMult) + BASE_DAM;
+        if (Flaming) Damage += FLAME_DAM;
+        Debug.WriteLine($"CalculateDamage finished: {Damage} (roll: {Roll})");
+    }
+    public bool Magic
+    {
+        get { return magic; }
+        set
+        {
+            magic = value;
+            CalculateDamage();
+        }
+    }
+    public bool Flaming
+    {
+        get { return flaming; }
+        set
+        {
+            flaming = value;
+            CalculateDamage();
         }
     }
 }
