@@ -18,8 +18,8 @@ internal class Program
             if (keyChar == '0' || keyChar == '1' || keyChar == '2' || keyChar == '3')
             {
                 sword.Roll = RollDice();
-                sword.Magic(keyChar == '1' || keyChar == '3');
-                sword.Flaming(keyChar == '2' || keyChar == '3');
+                sword.Magic = (keyChar == '1' || keyChar == '3');
+                sword.Flaming = (keyChar == '2' || keyChar == '3');
                 Console.WriteLine($"\nRolled {sword.Roll} for {sword.Damage} HP \n");
             }
             else
@@ -53,8 +53,6 @@ class SwordDamage
         roll = startingRoll;
         CalculateDamage();
     }
-
-    
 
     public int Roll
     {
